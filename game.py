@@ -13,6 +13,7 @@ BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
+GREY = (169, 169, 169)
 FONT = pygame.font.Font(None, 36)
 
 # Setup screen
@@ -23,7 +24,7 @@ clock = pygame.time.Clock()
 # Loading screen
 loading_start = time.time()
 while time.time() - loading_start < 1:
-    screen.fill(WHITE)
+    screen.fill(GREY)
     pygame.draw.circle(screen, BLUE, (WIDTH//2, HEIGHT//2), 50, 5)
     pygame.display.flip()
     clock.tick(60)
@@ -32,6 +33,7 @@ while time.time() - loading_start < 1:
 STATE_MAIN_MENU = "main_menu"
 STATE_INSTRUCTIONS = "instructions"
 STATE_GAME = "game"
+STATE_RESULT = "result"
 game_state = STATE_MAIN_MENU
 
 # Buttons
@@ -52,8 +54,11 @@ def display_text(text, x, y, color=BLACK):
 
 # Main loop
 running = True
+result_time = None
+result_text = ""
+
 while running:
-    screen.fill(WHITE)
+    screen.fill(GREY)
     
     if game_state == STATE_MAIN_MENU:
         display_text("Rock Paper Scissors", WIDTH//2 - 100, 100)
@@ -75,6 +80,11 @@ while running:
     elif game_state == STATE_GAME:
         display_text("Press SPACEBAR 3 times, then 1, 2, or 3!", 50, 50)
     
+    elif game_state == STATE_RESULT:
+        display_text(result_text, WIDTH//2 - 200, HEIGHT//2, RED)
+        if time.time() - result_time > 5:
+            game_state = STATE_GAME
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -89,10 +99,20 @@ while running:
                     player_choice = event.key - pygame.K_0
                     ai_choice = get_ai_choice(history)
                     history.append(player_choice)
-                    display_text(f"You: {player_choice} | AI: {ai_choice}", 50, 200)
+                    
+                    if player_choice == ai_choice:
+                        result_text = f"It's a tie! Player chose {player_choice}, AI chose {ai_choice}" 
+                    elif (player_choice == 1 and ai_choice == 3) or (player_choice == 2 and ai_choice == 1) or (player_choice == 3 and ai_choice == 2):
+                        result_text = f"You win! Player chose {player_choice}, AI chose {ai_choice}" 
+                    else:
+                        result_text = f"AI wins! Player chose {player_choice}, AI chose {ai_choice}" 
+                    
+                    result_time = time.time()
+                    game_state = STATE_RESULT
     
     pygame.display.flip()
     clock.tick(60)
 
 pygame.quit()
 sys.exit()
+
