@@ -7,7 +7,7 @@ import time
 pygame.init()
 
 # Constants
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 1000, 600
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
@@ -38,7 +38,7 @@ game_state = STATE_MAIN_MENU
 
 # Buttons
 play_button = pygame.Rect(WIDTH//2 - 50, HEIGHT//2 - 20, 100, 40)
-proceed_button = pygame.Rect(WIDTH//2 - 50, HEIGHT - 100, 100, 40)
+proceed_button = pygame.Rect(WIDTH//2 - 50, HEIGHT - 100, 200, 40)
 
 # AI prediction memory
 history = []
