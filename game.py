@@ -19,7 +19,7 @@ FONT = pygame.font.Font(None, 36)
 
 # Setup screen
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Rock Paper Scissors")
+pygame.display.set_caption("Rock, Paper, Scissors")
 clock = pygame.time.Clock()
 
 # Game states
